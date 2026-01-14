@@ -6,9 +6,13 @@ import java.time.LocalDateTime;
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /** nie
  * nie
  * tak
+=======
+/** nie ostateczny test
+>>>>>>> Stashed changes
 =======
 /** nie ostateczny test
 >>>>>>> Stashed changes
