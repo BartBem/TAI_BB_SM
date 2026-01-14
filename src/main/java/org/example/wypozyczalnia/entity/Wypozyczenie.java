@@ -3,6 +3,8 @@ package org.example.wypozyczalnia.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+
+
 /**
  * KLASA ENTITY - WYPOŻYCZENIE
  * 
@@ -18,7 +20,7 @@ import java.time.LocalDateTime;
 public class Wypozyczenie {
 
 
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wypozyczenie_id")
