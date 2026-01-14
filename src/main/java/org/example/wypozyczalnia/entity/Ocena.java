@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-/**
+/**siema1
  * KLASA ENTITY - OCENA
  * 
  * Użytkownik może ocenić film (1-5 gwiazdek).
