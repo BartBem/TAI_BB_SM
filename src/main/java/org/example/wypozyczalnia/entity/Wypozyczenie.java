@@ -5,9 +5,13 @@ import java.time.LocalDateTime;
 
 
 
+<<<<<<< Updated upstream
 /** nie
  * nie
  * tak
+=======
+/** nie ostateczny test
+>>>>>>> Stashed changes
  * KLASA ENTITY - WYPOŻYCZENIE
  * 
  * Reprezentuje pojedyncze wypożyczenie filmu przez użytkownika.
