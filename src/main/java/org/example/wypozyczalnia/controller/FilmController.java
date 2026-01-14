@@ -37,6 +37,7 @@ public class FilmController {
         return filmRepository.findAll();
     }
 
+    
     // ============================================
     // GET /api/filmy/1 - pobierz film o ID=1
     // ============================================
