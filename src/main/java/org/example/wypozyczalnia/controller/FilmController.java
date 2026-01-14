@@ -18,7 +18,6 @@ import java.util.List;
  * @RequestMapping = prefiks dla wszystkich endpointów w tej klasie
  */
 
-
 @RestController
 @RequestMapping("/api/filmy") // Wszystkie endpointy zaczynają się od /api/filmy
 public class FilmController {
