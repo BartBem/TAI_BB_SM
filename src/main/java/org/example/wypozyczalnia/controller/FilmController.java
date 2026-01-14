@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
+ *
+ * 
  * KONTROLER - FilmController
  * 
  * Kontroler odpowiada na żądania HTTP.
@@ -17,6 +19,7 @@ import java.util.List;
  * @RestController = ta klasa zwraca dane (JSON), nie strony HTML
  * @RequestMapping = prefiks dla wszystkich endpointów w tej klasie
  */
+
 @RestController
 @RequestMapping("/api/filmy") // Wszystkie endpointy zaczynają się od /api/filmy
 public class FilmController {
@@ -34,6 +37,7 @@ public class FilmController {
         return filmRepository.findAll();
     }
 
+    
     // ============================================
     // GET /api/filmy/1 - pobierz film o ID=1
     // ============================================

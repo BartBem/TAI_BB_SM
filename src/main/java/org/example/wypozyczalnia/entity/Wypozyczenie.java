@@ -3,7 +3,9 @@ package org.example.wypozyczalnia.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-/**
+
+
+/** nie nie nie
  * KLASA ENTITY - WYPOŻYCZENIE
  * 
  * Reprezentuje pojedyncze wypożyczenie filmu przez użytkownika.
@@ -16,6 +18,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "wypozyczenie")
 public class Wypozyczenie {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
