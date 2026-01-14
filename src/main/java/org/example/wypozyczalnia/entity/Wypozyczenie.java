@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 @Table(name = "wypozyczenie")
 public class Wypozyczenie {
 
+
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wypozyczenie_id")
