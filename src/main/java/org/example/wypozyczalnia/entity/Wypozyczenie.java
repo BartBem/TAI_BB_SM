@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 
-
-
 /** nie
  * nie
  * tak
+=======
+/** nie ostateczny test
+>>>>>>> Stashed changes
 =======
 /** nie ostateczny test
 >>>>>>> Stashed changes
