@@ -1,0 +1,72 @@
+# ============================================
+# DOCKER COMPOSE - Wypożyczalnia Filmów
+# ============================================
+# Uruchamia całą aplikację jedną komendą:
+# docker-compose up --build
+#
+# Kontenery:
+# - db: Baza danych PostgreSQL
+# - pgadmin: Panel administracyjny bazy
+# - backend: Aplikacja Spring Boot
+
+services:
+  # ============================================
+  # BAZA DANYCH POSTGRESQL
+  # ============================================
+  db:
+    image: postgres:16
+    container_name: pg_wypozyczalnia
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: wypozyczalnia
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # Healthcheck - sprawdza czy baza jest gotowa
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d wypozyczalnia" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # PGADMIN - Panel administracyjny
+  # ============================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_wypozyczalnia
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@wypozyczalnia.pl
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmindata:/var/lib/pgadmin
+    depends_on:
+      - db
+
+  # ============================================
+  # BACKEND - Aplikacja Spring Boot
+  # ============================================
+  backend:
+    build: . # Buduj z Dockerfile w tym folderze
+    container_name: backend_wypozyczalnia
+    restart: unless-stopped
+    ports:
+      - "8080:8080" # Aplikacja dostępna na localhost:8080
+    environment:
+      # Nadpisz konfigurację z application.properties
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/wypozyczalnia
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin123
+    depends_on:
+      db:
+        condition: service_healthy # Czekaj aż baza będzie gotowa
+
+volumes:
+  pgdata:
+  pgadmindata:
