@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 
 /** zmiana po fetch
- 
+ zmiana 1
  * KLASA ENTITY - WYPOŻYCZENIE
  * 
  * Reprezentuje pojedyncze wypożyczenie filmu przez użytkownika.
