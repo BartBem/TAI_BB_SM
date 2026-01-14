@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 
-/** nie
+/** zmiana po fetch
  
  * KLASA ENTITY - WYPOŻYCZENIE
  * 
