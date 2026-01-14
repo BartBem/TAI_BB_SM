@@ -5,8 +5,7 @@ import java.time.LocalDateTime;
 
 
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
 /** nie
  * nie
  * tak
