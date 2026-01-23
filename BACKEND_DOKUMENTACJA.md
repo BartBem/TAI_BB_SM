@@ -252,7 +252,7 @@ Serwisy zawierają logikę aplikacji - walidacje, obliczenia, reguły biznesowe.
 - `pobierzMojeWypozyczenia(uzytkownikId)` - lista wypożyczeń użytkownika
 
 ### PlatnoscService.java
-- `utworzSesjePlatnosci(wypozyczenieId)` - generuje link do Stripe Checkout
+- `utworzSesjePlatnosci(wypozyczenieId)` - generuje link do Stripe Checkout (działa również dla ponowienia płatności)
 - `oznaczJakoOplacona(sessionId)` - aktualizuje status po płatności
 
 ### InterakcjeService.java
@@ -312,8 +312,14 @@ spring.sql.init.mode=always
 spring.jpa.defer-datasource-initialization=true
 
 # Klucz API Stripe (płatności)
-stripe.api.key=sk_test_...
+# Klucz API Stripe (płatności)
+# W wersji lokalnej wklej tutaj swój klucz (nie commituj go!)
+# W wersji Docker używamy zmiennej środowiskowej ${STRIPE_API_KEY}
+stripe.api.key=WKLEJ_TUTAJ_SWOJ_NOWY_KLUCZ_STRIPE
 ```
+
+> **Ważne:** Prawdziwy klucz trzymamy tylko lokalnie lub w pliku `.env` (dla Dockera).
+> W repozytorium znajduje się bezpieczny szablon `application.properties.template`.
 
 ### data.sql
 Zawiera przykładowe dane testowe:

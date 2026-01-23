@@ -142,16 +142,12 @@ const pobierzFilmy = async (filtry = {}) => {
 **Kluczowe elementy:**
 ```jsx
 // Wypożyczanie filmu
-const wypozyczFilm = async () => {
-    // 1. Utwórz wypożyczenie
-    const odpWypozyczenie = await axios.post('/wypozyczenia', { filmId });
-    
-    // 2. Pobierz link do Stripe
-    const odpPlatnosc = await axios.post(`/platnosci/utworz/${wypozyczenieId}`);
-    
-    // 3. Przekieruj do Stripe Checkout
-    window.location.href = odpPlatnosc.data.url;
-};
+3. Wyświetla karty z:
+   - Tytułem filmu
+   - Statusem (aktywne, wygasłe, oczekuje płatności)
+   - Licznikiem czasu (ile zostało do końca)
+4. Dla nieopłaconych (status "oczekuje_oplacenia") → przycisk "💳 Dokończ płatność"
+   - Pozwala wygenerować nowy link do Stripe, jeśli poprzedni wygasł lub użytkownik zamknął kartę.
 ```
 
 ---
@@ -185,7 +181,8 @@ const wypozyczFilm = async () => {
    - Tytułem filmu
    - Statusem (aktywne, wygasłe, oczekuje płatności)
    - Licznikiem czasu (ile zostało do końca)
-4. Dla nieopłaconych → przycisk "Zapłać teraz"
+4. Dla nieopłaconych (status "oczekuje_oplacenia") → przycisk "💳 Dokończ płatność"
+   - Pozwala wygenerować nowy link do Stripe, jeśli poprzedni wygasł lub użytkownik zamknął kartę.
 
 **Licznik czasu:**
 ```jsx
@@ -224,7 +221,7 @@ const LicznikCzasu = ({ dataKonca }) => {
 ### KartaFilmu.jsx
 **Po co:** Pojedyncza karta filmu w siatce
 **Zawiera:**
-- Plakat (obrazek)
+- Plakat (obrazek) - z obsługą błędów ładowania
 - Rok produkcji (badge w rogu)
 - Tytuł
 - Gatunki
