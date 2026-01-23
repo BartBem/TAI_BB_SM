@@ -299,28 +299,43 @@ Oddzielamy je od encji, żeby nie eksponować wszystkich pól bazy danych.
 
 ### application.properties
 ```properties
-# Połączenie z bazą danych PostgreSQL
-spring.datasource.url=jdbc:postgresql://localhost:5432/wypozyczalnia
+spring.application.name=wypozyczalnia
+
+# Konfiguracja Bazy Danych (PostgreSQL)
+spring.datasource.url=jdbc:postgresql://localhost:5432/wypozyczalnia?characterEncoding=UTF-8&encoding=UTF-8
 spring.datasource.username=admin
 spring.datasource.password=admin123
+spring.datasource.driver-class-name=org.postgresql.Driver
 
-# Hibernate tworzy tabele automatycznie
+# Konfiguracja Hibernate / JPA
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=create-drop  # ⚠️ Czyści bazę przy restarcie!
-
-# Ładuje dane testowe z data.sql
-spring.sql.init.mode=always
+spring.jpa.show-sql=true
 spring.jpa.defer-datasource-initialization=true
 
-# Klucz API Stripe (płatności)
-stripe.api.key=sk_test_...
+# Inicjalizacja danych testowych
+spring.sql.init.mode=always
+
+# Kodowanie
+server.encoding.charset=UTF-8
+server.encoding.force=true
+
+# Logowanie
+logging.level.org.springframework.web=INFO
+logging.level.org.hibernate=WARN
+
+# Stripe - płatności (plik w .gitignore, klucz tylko lokalnie)
+stripe.api.key=WKLEJ_TUTAJ_SWOJ_KLUCZ_STRIPE
 ```
+
+> **Ważne:** Plik `application.properties` jest w `.gitignore`. Użyj szablonu `application.properties.template` do konfiguracji.
 
 ### data.sql
 Zawiera przykładowe dane testowe:
 - 5 użytkowników
 - 5 gatunków (Akcja, Komedia, Dramat, Sci-Fi, Horror)
 - 5 aktorów
-- 5 filmów z powiązaniami
+- **50+ filmów** (5 głównych + automatycznie generowane)
 - Przykładowe wypożyczenia, płatności, oceny, komentarze
 
 ---
