@@ -1,49 +1,18 @@
-# ============================================
-# DOCKERFILE - Wypożyczalnia Filmów
-# ============================================
-# Ten plik instruuje Dockera jak zbudować obraz aplikacji.
-# 
-# Multi-stage build:
-# 1. ETAP BUILD: kompiluje aplikację (używa Maven)
-# 2. ETAP RUN: uruchamia skompilowany JAR (lekki obraz)
-
-# ============================================
-# ETAP 1: BUILD (kompilacja)
-# ============================================
-FROM eclipse-temurin:17-jdk AS build
-
-# Katalog roboczy w kontenerze
+# Etap 1: Budowanie aplikacji (Maven)
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
-
-# Kopiuj pliki Maven (najpierw - dla cache'owania)
-COPY mvnw .
-COPY .mvn .mvn
 COPY pom.xml .
+COPY src ./src
+# Budujemy aplikację bez uruchamiania testów (szybciej)
+RUN mvn clean package -DskipTests
 
-# Nadaj uprawnienia do uruchomienia mvnw
-RUN chmod +x mvnw
-
-# Pobierz zależności (cache'owane jeśli pom.xml się nie zmieni)
-RUN ./mvnw dependency:go-offline -B
-
-# Kopiuj kod źródłowy
-COPY src src
-
-# Zbuduj aplikację (bez testów dla szybkości)
-RUN ./mvnw package -DskipTests
-
-# ============================================
-# ETAP 2: RUN (uruchomienie)
-# ============================================
-FROM eclipse-temurin:17-jre
-
+# Etap 2: Uruchamianie aplikacji (JDK)
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
-
-# Kopiuj zbudowany JAR z etapu BUILD
 COPY --from=build /app/target/*.jar app.jar
 
-# Port na którym działa aplikacja
+# Port wewnętrzny kontenera
 EXPOSE 8080
 
-# Komenda uruchamiająca aplikację
+# Uruchomienie aplikacji
 ENTRYPOINT ["java", "-jar", "app.jar"]

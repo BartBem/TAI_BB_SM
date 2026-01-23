@@ -1,0 +1,28 @@
+spring.application.name=wypozyczalnia
+
+# Konfiguracja Bazy Danych (PostgreSQL)
+spring.datasource.url=jdbc:postgresql://localhost:5432/wypozyczalnia?characterEncoding=UTF-8&encoding=UTF-8
+spring.datasource.username=admin
+spring.datasource.password=admin123
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# Konfiguracja Hibernate / JPA
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.defer-datasource-initialization=true
+
+# Inicjalizacja danych testowych
+spring.sql.init.mode=always
+
+# Kodowanie
+server.encoding.charset=UTF-8
+server.encoding.force=true
+
+# Logowanie
+logging.level.org.springframework.web=INFO
+logging.level.org.hibernate=WARN
+
+# Stripe - płatności (WKLEJ TUTAJ SWÓJ KLUCZ)
+stripe.api.key=TU_WKLEJ_SWOJ_KLUCZ_STRIPE

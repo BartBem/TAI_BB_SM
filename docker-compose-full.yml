@@ -1,10 +1,12 @@
 # ============================================
-# DOCKER COMPOSE - Wersja Deweloperska (Tylko Baza)
+# DOCKER COMPOSE - PEŁNA APLIKACJA (FULL)
 # ============================================
-# Używaj tego pliku do codziennej pracy.
-# Uruchamia tylko bazę danych, a aplikację odpalasz w IntelliJ/Terminalu.
+# Używaj tego pliku, jeśli chcesz uruchomić WSZYSTKO w kontenerach:
+# - Baza danych
+# - Backend (Spring Boot)
+# - Frontend (React + Nginx)
 #
-# Komenda: docker-compose up -d
+# Komenda: docker-compose -f docker-compose-full.yml up --build
 
 services:
   # ============================================
@@ -44,6 +46,37 @@ services:
       - pgadmindata:/var/lib/pgadmin
     depends_on:
       - db
+
+  # ============================================
+  # BACKEND - Aplikacja Spring Boot
+  # ============================================
+  backend:
+    build: .
+    container_name: backend_wypozyczalnia
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/wypozyczalnia
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin123
+      # Klucz Stripe - pobierany ze zmiennej środowiskowej
+      STRIPE_API_KEY: ${STRIPE_API_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ============================================
+  # FRONTEND - Aplikacja React
+  # ============================================
+  frontend:
+    build: ./frontend
+    container_name: frontend_wypozyczalnia
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
 
 volumes:
   pgdata:

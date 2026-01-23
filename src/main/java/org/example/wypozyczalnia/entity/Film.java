@@ -68,6 +68,11 @@ public class Film {
     @JoinTable(name = "film_aktor", joinColumns = @JoinColumn(name = "film_id"), inverseJoinColumns = @JoinColumn(name = "aktor_id"))
     private Set<Aktor> aktorzy = new HashSet<>();
 
+    // RELACJA ZWROTNA DO OCEN (potrzebna do filtrowania po średniej)
+    @OneToMany(mappedBy = "film")
+    @com.fasterxml.jackson.annotation.JsonIgnore // Zapobiega pętli w JSON (Film -> Ocena -> Film)
+    private Set<Ocena> oceny = new HashSet<>();
+
     // ============================================
     // KONSTRUKTORY
     // ============================================
@@ -163,5 +168,13 @@ public class Film {
 
     public void dodajAktora(Aktor aktor) {
         this.aktorzy.add(aktor);
+    }
+
+    public Set<Ocena> getOceny() {
+        return oceny;
+    }
+
+    public void setOceny(Set<Ocena> oceny) {
+        this.oceny = oceny;
     }
 }

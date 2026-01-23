@@ -9,9 +9,8 @@ import java.util.Optional;
 @Repository
 public interface OcenaRepository extends JpaRepository<Ocena, Long> {
 
-    // Oceny danego filmu
-    List<Ocena> findByFilm_FilmId(Long filmId);
-
-    // Ocena wystawiona przez konkretnego użytkownika dla konkretnego filmu
+    // Sprawdź czy użytkownik już ocenił ten film
     Optional<Ocena> findByUzytkownik_UzytkownikIdAndFilm_FilmId(Long uzytkownikId, Long filmId);
+
+    List<Ocena> findByFilm_FilmId(Long filmId);
 }
