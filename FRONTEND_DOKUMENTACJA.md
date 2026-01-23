@@ -9,9 +9,9 @@
 
 | Technologia | Wersja | Po co |
 |-------------|--------|-------|
-| **React** | 18+ | Biblioteka do budowania interfejsów użytkownika |
-| **Vite** | 5+ | Szybki serwer deweloperski i bundler |
-| **React Router** | 6+ | Nawigacja między stronami (bez przeładowania) |
+| **React** | 19+ | Biblioteka do budowania interfejsów użytkownika |
+| **Vite** | 7+ | Szybki serwer deweloperski i bundler |
+| **React Router** | 7+ | Nawigacja między stronami (bez przeładowania) |
 | **Axios** | 1+ | Wysyłanie żądań HTTP do backendu |
 | **Bootstrap** | 5+ | Gotowe style CSS (przyciski, karty, formularze) |
 | **React Bootstrap** | 2+ | Komponenty Bootstrap jako komponenty React |
