@@ -1,49 +1,142 @@
-# Wypożyczalnia Filmów - Backend
+# 🎬 Wypożyczalnia Filmów - Instrukcja Uruchamiania
 
-Aplikacja backendowa dla internetowej wypożyczalni filmów.
+## 📋 Wymagania
 
-## 🚀 Szybki start (Docker)
+Przed uruchomieniem upewnij się, że masz zainstalowane:
+- **Java 17+** (do backendu)
+- **Node.js 18+** (do frontendu)
+- **PostgreSQL** (lub Docker)
 
-**Wymagania:** Docker Desktop
+---
 
+## 🚀 Jak Uruchomić Aplikację
+
+### KROK 1: Uruchom Bazę Danych (PostgreSQL)
+
+**Opcja A: Przez Docker (zalecane)**
 ```bash
-# Uruchom wszystko jedną komendą:
-docker-compose up --build
-
-# Aplikacja dostępna pod:
-# http://localhost:8080/api/filmy/test
+cd c:\Users\barto\IdeaProjects\wypozyczalnia
+docker-compose up -d db
 ```
 
-## 🔧 Uruchomienie bez Dockera
+**Opcja B: Lokalna instalacja PostgreSQL**
+- Baza musi działać na porcie `5432`
+- Użytkownik: `admin`, Hasło: `admin123`
+- Nazwa bazy: `wypozyczalnia`
 
-**Wymagania:** Java 17, Docker (tylko dla bazy)
+---
 
+### KROK 2: Uruchom Backend (Spring Boot)
+
+**W IntelliJ IDEA:**
+1. Otwórz projekt `wypozyczalnia`
+2. Znajdź plik `WypozyczalniaApplication.java`
+3. Kliknij prawym → **Run 'WypozyczalniaApplication'**
+4. Poczekaj aż zobaczysz: `Started WypozyczalniaApplication`
+
+**Backend działa na:** `http://localhost:8080`
+
+---
+
+### KROK 3: Uruchom Frontend (React)
+
+**W terminalu (CMD lub PowerShell):**
 ```bash
-# 1. Uruchom bazę danych:
-docker-compose up db -d
-
-# 2. Uruchom aplikację:
-./mvnw spring-boot:run
+cd c:\Users\barto\IdeaProjects\wypozyczalnia\frontend
+npm install      # Tylko za pierwszym razem!
+npm run dev
 ```
 
-## 📡 API Endpoints
+**Frontend działa na:** `http://localhost:5173`
 
-| Metoda | URL | Opis |
-|--------|-----|------|
-| GET | `/api/filmy` | Lista filmów |
-| GET | `/api/filmy/{id}` | Film po ID |
-| POST | `/api/filmy` | Dodaj film |
-| DELETE | `/api/filmy/{id}` | Usuń film |
+---
 
-## 🗄️ Dostęp do bazy
+## 🌐 Otwórz Aplikację
 
-- **pgAdmin:** http://localhost:5050
-- **Login:** admin@wypozyczalnia.pl
-- **Hasło:** admin123
+Po uruchomieniu wszystkich komponentów, otwórz przeglądarkę:
 
-## 🛠️ Technologie
+👉 **http://localhost:5173**
 
-- Java 17
-- Spring Boot 4.0
-- PostgreSQL 16
-- Docker
+---
+
+## 🔑 Testowe Konta
+
+Aplikacja ładuje dane testowe z pliku `data.sql`. Możesz użyć:
+
+| Email | Nick | Hasło |
+|-------|------|-------|
+| jan.kowalski@example.com | jankowal | (zahashowane) |
+| admin@wypozyczalnia.pl | admin | (zahashowane) |
+
+**Lub zarejestruj nowe konto** na stronie `/rejestracja`.
+
+---
+
+## 📊 Porty w Aplikacji
+
+| Usługa | Port | URL |
+|--------|------|-----|
+| Frontend (React) | 5173 | http://localhost:5173 |
+| Backend (Spring) | 8080 | http://localhost:8080/api |
+| Baza danych (PostgreSQL) | 5432 | - |
+| pgAdmin (opcjonalnie) | 5050 | http://localhost:5050 |
+
+---
+
+## ❌ Rozwiązywanie Problemów
+
+### "Port 8080 already in use"
+```bash
+# Znajdź proces
+netstat -ano | findstr :8080
+# Zamknij go (zamień PID na numer z poprzedniej komendy)
+taskkill /PID <PID> /F
+```
+
+### "Port 5173 is in use"
+Zamknij wszystkie terminale i uruchom `npm run dev` ponownie.
+Vite automatycznie przeskoczy na 5174 jeśli 5173 jest zajęty.
+
+### "Błąd połączenia z serwerem" na frontendzie
+1. Sprawdź czy backend działa (zobacz logi w IntelliJ)
+2. Sprawdź czy CORS pozwala na połączenie z portu frontendu
+
+### "password authentication failed for user"
+Sprawdź hasło w `application.properties`:
+```properties
+spring.datasource.username=admin
+spring.datasource.password=admin123
+```
+
+---
+
+## 📁 Struktura Projektu
+
+```
+wypozyczalnia/
+├── src/main/java/...           # Backend (Java/Spring Boot)
+├── src/main/resources/
+│   ├── application.properties  # Konfiguracja backendu
+│   └── data.sql                # Dane testowe
+├── frontend/                   # Frontend (React)
+│   ├── src/
+│   │   ├── pages/              # Strony aplikacji
+│   │   ├── components/         # Komponenty wielokrotnego użytku
+│   │   └── context/            # Stan globalny (autoryzacja)
+│   └── package.json            # Zależności Node.js
+├── docker-compose.yml          # Docker dla bazy danych
+├── BACKEND_DOKUMENTACJA.md     # Dokumentacja backendu
+└── FRONTEND_DOKUMENTACJA.md    # Dokumentacja frontendu
+```
+
+---
+
+## 🎯 Funkcje Aplikacji
+
+- ✅ Przeglądanie katalogu filmów
+- ✅ Filtrowanie (tytuł, gatunek, rok, cena, ocena)
+- ✅ Rejestracja i logowanie
+- ✅ Wypożyczanie filmów (48h)
+- ✅ Płatności online (Stripe)
+- ✅ Oceny i komentarze
+- ✅ Panel "Moje Wypożyczenia" z licznikiem czasu

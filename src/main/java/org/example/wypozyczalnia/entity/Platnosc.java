@@ -31,6 +31,7 @@ public class Platnosc {
 
     @OneToOne
     @JoinColumn(name = "wypozyczenie_id", unique = true, nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Wypozyczenie wypozyczenie;
 
     @NotNull(message = "Kwota jest wymagana")

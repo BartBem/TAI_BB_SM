@@ -7,6 +7,7 @@ Note: _This is purely the output of the chat conversation and does not contain a
 Pisz po polsku.
 
 utowrzyłem nową baze w pgSQL która łaczy sie popzrez pgAdmin, Moim zadnimejest stworzyc stronę internetowa, utworzyłem już bazę w kontenerze dockera za pomocą pliku @[docker-compose.yml] , chce zebys stworzył ze mną backend w javie do strony interemtowej, zanim jednak to zrobisz chce zebysmy zaprojektowali strukture bazy, moim tematem jest internetowa wypozyczalnia filmów. a pomyslem na baze:
+
 1) Uzytkownik
 
 UzytkownikID (PK)
@@ -112,6 +113,7 @@ Zanim zacznę planować, pozwól że przejrzę Twój plik `docker-compose.yml`, 
 **Ogólna ocena: Bardzo dobra!** Twój projekt jest przemyślany i poprawny. Kilka uwag:
 
 ### ✅ Co jest dobrze:
+
 1. **Relacje M:N** (Film-Gatunek, Film-Aktor) - poprawnie zaprojektowane z tabelami łączącymi
 2. **Relacja 1:1** (Wypożyczenie-Płatność) z `UNIQUE` na `WypozyczenieID` - świetne rozwiązanie
 3. **Klucze główne i obce** - wszystko na miejscu
@@ -119,14 +121,16 @@ Zanim zacznę planować, pozwól że przejrzę Twój plik `docker-compose.yml`, 
 
 ### 💡 Sugestie ulepszeń:
 
-| Tabela | Sugestia |
-|--------|----------|
-| **Film** | Dodaj `PlakatUrl` (link do obrazka) i `CenaWypozyczenia` (każdy film może mieć inną cenę) |
-| **Wypozyczenie** | Dodaj `DataUtworzenia` (kiedy złożono zamówienie, niezależnie od `DataStartu`) |
-| **Uzytkownik** | Rozważ dodanie `Imie`, `Nazwisko` dla pełniejszego profilu |
+| Tabela                 | Sugestia                                                                                           |
+| ---------------------- | -------------------------------------------------------------------------------------------------- |
+| **Film**         | Dodaj `PlakatUrl` (link do obrazka) i `CenaWypozyczenia` (każdy film może mieć inną cenę) |
+| **Wypozyczenie** | Dodaj `DataUtworzenia` (kiedy złożono zamówienie, niezależnie od `DataStartu`)             |
+| **Uzytkownik**   | Rozważ dodanie `Imie`, `Nazwisko` dla pełniejszego profilu                                   |
 
 ### 🎯 Relacja Stripe:
+
 W tabeli **Platnosc** warto dodać:
+
 - `StripePaymentIntentId` - identyfikator transakcji ze Stripe
 - `StripeSessionId` - identyfikator sesji płatności
 
@@ -137,26 +141,31 @@ To pozwoli łatwo śledzić płatności w panelu Stripe.
 ## 📋 Plan Realizacji Projektu
 
 ### **ETAP 1: Przygotowanie środowiska (dziś)**
+
 1. ✅ Baza PostgreSQL w Dockerze - **już masz!**
 2. Utworzenie projektu Java (Spring Boot)
 3. Konfiguracja połączenia z bazą
 
 ### **ETAP 2: Struktura bazy danych**
+
 1. Stworzenie skryptu SQL z tabelami
 2. Uruchomienie migracji (lub ręczne wykonanie w pgAdmin)
 
 ### **ETAP 3: Backend Java (Spring Boot)**
+
 1. Modele (Entity) - klasy Java odpowiadające tabelom
 2. Repozytoria (Repository) - dostęp do danych
 3. Serwisy (Service) - logika biznesowa
 4. Kontrolery (Controller) - endpointy REST API
 
 ### **ETAP 4: Integracja Stripe**
+
 1. Konfiguracja Stripe SDK
 2. Endpoint utworzenia sesji płatności
 3. Webhook odbierający potwierdzenie płatności
 
 ### **ETAP 5: Zabezpieczenia**
+
 1. Rejestracja i logowanie (JWT lub sesje)
 2. Hashowanie haseł (BCrypt)
 
@@ -164,15 +173,15 @@ To pozwoli łatwo śledzić płatności w panelu Stripe.
 
 ## 🛠️ Rekomendowane Narzędzia dla Java 17
 
-| Narzędzie | Do czego | Wersja |
-|-----------|----------|--------|
-| **Spring Boot** | Framework webowy | 3.2.x (wspiera Java 17) |
-| **Spring Data JPA** | Dostęp do bazy danych | wbudowane w Spring Boot |
-| **Hibernate** | ORM (mapowanie obiektowo-relacyjne) | wbudowane |
-| **Lombok** | Redukcja boilerplate kodu | najnowsza |
-| **Spring Security** | Autoryzacja i uwierzytelnianie | wbudowane |
-| **Stripe Java SDK** | Integracja płatności | 24.x |
-| **Maven** lub **Gradle** | Zarządzanie zależnościami | dowolny |
+| Narzędzie                           | Do czego                            | Wersja                  |
+| ------------------------------------ | ----------------------------------- | ----------------------- |
+| **Spring Boot**                | Framework webowy                    | 3.2.x (wspiera Java 17) |
+| **Spring Data JPA**            | Dostęp do bazy danych              | wbudowane w Spring Boot |
+| **Hibernate**                  | ORM (mapowanie obiektowo-relacyjne) | wbudowane               |
+| **Lombok**                     | Redukcja boilerplate kodu           | najnowsza               |
+| **Spring Security**            | Autoryzacja i uwierzytelnianie      | wbudowane               |
+| **Stripe Java SDK**            | Integracja płatności              | 24.x                    |
+| **Maven** lub **Gradle** | Zarządzanie zależnościami        | dowolny                 |
 
 **Java 17 jest idealna** - Spring Boot 3.x wymaga minimum Java 17, więc nie musisz nic zmieniać!
 
@@ -181,15 +190,12 @@ To pozwoli łatwo śledzić płatności w panelu Stripe.
 ## ❓ Pytania do Ciebie przed rozpoczęciem:
 
 1. **Maven czy Gradle?** - Który system budowania wolisz? (Maven jest prostszy dla początkujących)
-
 2. **IDE** - Używasz IntelliJ IDEA? (widzę folder `IdeaProjects`)
-
 3. **Autentykacja** - Wolisz:
+
    - **JWT (tokeny)** - popularne w REST API, frontend przechowuje token
    - **Sesje** - klasyczne podejście, prostsze na start
-
 4. **Stripe API Key** - Będę potrzebował klucza do testowania. Możesz go wygenerować w [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys) - użyj kluczy **testowych** (zaczynających się od `sk_test_` i `pk_test_`)
-
 5. **Czy akceptujesz moje sugestie do bazy?** (dodatkowe pola)
 
 ---
@@ -224,15 +230,16 @@ Do **backendu Java** potrzebuję **klucza sekretnego** (`sk_test_...`), który z
 
 Żeby móc ruszyć z projektem, potrzebuję jeszcze odpowiedzi na:
 
-1. **Maven czy Gradle?** 
+1. **Maven czy Gradle?**
+
    - Maven - prostszy, więcej tutoriali dla początkujących
    - Gradle - nowocześniejszy, szybszy
-
 2. **Sposób logowania:**
+
    - **JWT** - token przechowywany w przeglądarce, popularny w React + REST API
    - **Sesje** - klasyczne ciasteczka, prostsze na start
-
 3. **Czy akceptujesz dodatkowe pola w bazie?**
+
    - `Film.PlakatUrl` i `Film.CenaWypozyczenia`
    - `Platnosc.StripePaymentIntentId` i `Platnosc.StripeSessionId`
    - `Wypozyczenie.DataUtworzenia`
@@ -269,7 +276,6 @@ Widzę, że jest prosty projekt z jednym plikiem [Main.java](cci:7://file:///c:/
 
 napisz mi jak uzywac spring boost i czy to problem ze folder w ktorym otworzyłem jest w IDE?
 
-
 ### Planner Response
 
 Świetne pytania! Odpowiem na oba:
@@ -282,11 +288,11 @@ napisz mi jak uzywac spring boost i czy to problem ze folder w ktorym otworzyłe
 
 ### Jak to działa w praktyce:
 
-| Bez Spring Boot | Ze Spring Boot |
-|-----------------|----------------|
-| Musisz ręcznie konfigurować serwer | Serwer uruchamia się automatycznie |
-| Pisać kod do połączenia z bazą | Jedna adnotacja `@Entity` i gotowe |
-| Tworzyć endpointy HTTP ręcznie | `@GetMapping("/api/filmy")` i działa |
+| Bez Spring Boot                      | Ze Spring Boot                          |
+| ------------------------------------ | --------------------------------------- |
+| Musisz ręcznie konfigurować serwer | Serwer uruchamia się automatycznie     |
+| Pisać kod do połączenia z bazą   | Jedna adnotacja `@Entity` i gotowe    |
+| Tworzyć endpointy HTTP ręcznie     | `@GetMapping("/api/filmy")` i działa |
 
 ### Prosty przykład:
 
@@ -302,12 +308,14 @@ public class FilmController {
 ```
 
 To wszystko! Spring Boot sam:
+
 - Uruchomi serwer na porcie 8080
 - Zamieni listę filmów na JSON
 - Obsłuży żądania HTTP
 
 ### Kluczowe adnotacje (oznaczenia):
-- `@Entity` - "ta klasa to tabela w bazie danych"
+
+- `@Entity` - "ta klasa to tabela w bazie danych"  
 - `@Repository` - "ta klasa pobiera dane z bazy"
 - `@Service` - "ta klasa zawiera logikę biznesową"
 - `@RestController` - "ta klasa odpowiada na żądania HTTP"
@@ -319,8 +327,10 @@ To wszystko! Spring Boot sam:
 **Nie, to żaden problem!** Wręcz przeciwnie - to dobrze, że masz otwarty folder `TAI` w IntelliJ.
 
 ### Co zrobię:
+
 1. **Usunę** stary plik [src/Main.java](cci:7://file:///c:/Users/barto/IdeaProjects/TAI/src/Main.java:0:0-0:0) (jest niepotrzebny)
 2. **Utworzę** nową strukturę folderów dla Spring Boot:
+
    ```
    TAI/
    ├── pom.xml                           (konfiguracja Maven)
@@ -339,10 +349,10 @@ To wszystko! Spring Boot sam:
    │           ├── application.properties
    │           └── schema.sql
    ```
-
 3. **IntelliJ automatycznie rozpozna** projekt Maven po odświeżeniu
 
 ### Po utworzeniu projektu:
+
 1. IntelliJ pokaże okienko "Maven projects need to be imported" → kliknij **"Import"**
 2. Poczekaj aż IntelliJ pobierze wszystkie biblioteki
 3. Kliknij zieloną strzałkę ▶️ przy klasie głównej, aby uruchomić
@@ -352,6 +362,7 @@ To wszystko! Spring Boot sam:
 ## ❓ Czy mogę przejść do implementacji?
 
 Zanim zacznę pisać kod, potrzebuję jeszcze:
+
 1. **Klucz sekretny Stripe** (`sk_test_...`) - czy możesz go podać?
 2. **Akceptacja planu** - czy przejrzałeś [plan implementacji](file:///C:/Users/barto/.gemini/antigravity/brain/71394ff9-3adc-465b-b968-63d08d20bca2/implementation_plan.md) i jest OK?
 
@@ -370,6 +381,7 @@ Tak, to świetny pomysł! **Utworzenie projektu przez IntelliJ jest prostsze i m
 ## 🚀 Jak utworzyć projekt Spring Boot w IntelliJ:
 
 ### Krok 1: Nowy projekt
+
 1. **File → New → Project...**
 2. W lewym panelu wybierz **"Spring Initializr"** (lub "Spring Boot")
 3. Wypełnij:
@@ -383,7 +395,9 @@ Tak, to świetny pomysł! **Utworzenie projektu przez IntelliJ jest prostsze i m
    - **Java:** 17
 
 ### Krok 2: Wybierz zależności
+
 Zaznacz następujące:
+
 - ✅ **Spring Web** (REST API)
 - ✅ **Spring Data JPA** (baza danych)
 - ✅ **PostgreSQL Driver** (sterownik PostgreSQL)
@@ -392,6 +406,7 @@ Zaznacz następujące:
 - ✅ **Lombok** (mniej pisania kodu)
 
 ### Krok 3: Utwórz
+
 Kliknij **Create** i poczekaj aż IntelliJ pobierze wszystkie biblioteki.
 
 ---
@@ -399,6 +414,7 @@ Kliknij **Create** i poczekaj aż IntelliJ pobierze wszystkie biblioteki.
 ## 📋 Co potem?
 
 Jak utworzysz projekt, daj mi znać i wyślij mi ścieżkę do nowego folderu projektu. Wtedy:
+
 1. Przeniosę [docker-compose.yml](cci:7://file:///c:/Users/barto/IdeaProjects/TAI/docker-compose.yml:0:0-0:0) do nowego projektu
 2. Utworzę wszystkie klasy (Entity, Repository, Service, Controller)
 3. Skonfiguruję połączenie z bazą danych
@@ -423,13 +439,14 @@ czemu pl.wypozyczalnia?
 
 W Javie pakiety (foldery z kodem) nazywa się **odwrotną nazwą domeny**:
 
-| Firma | Domena | Pakiet w Javie |
-|-------|--------|----------------|
-| Google | google.com | `com.google` |
-| Netflix | netflix.com | `com.netflix` |
+| Firma         | Domena           | Pakiet w Javie       |
+| ------------- | ---------------- | -------------------- |
+| Google        | google.com       | `com.google`       |
+| Netflix       | netflix.com      | `com.netflix`      |
 | Twój projekt | wypozyczalnia.pl | `pl.wypozyczalnia` |
 
 ### Dlaczego tak?
+
 - **Unikanie konfliktów** - jeśli dwie osoby napiszą klasę `User`, pakiety je rozróżniają
 - **Organizacja** - wiadomo kto napisał kod
 - **Profesjonalizm** - tak robią wszystkie firmy
@@ -438,11 +455,11 @@ W Javie pakiety (foldery z kodem) nazywa się **odwrotną nazwą domeny**:
 
 ## 🎯 Dla Twojego projektu możesz wybrać:
 
-| Opcja | Nazwa pakietu | Dla kogo |
-|-------|---------------|----------|
-| 1 | `pl.wypozyczalnia` | Profesjonalne, jakbyś miał firmę |
-| 2 | `com.example.wypozyczalnia` | Typowa nazwa dla tutoriali |
-| 3 | `pl.barto.wypozyczalnia` | Osobista, z Twoim nickiem |
+| Opcja | Nazwa pakietu                 | Dla kogo                            |
+| ----- | ----------------------------- | ----------------------------------- |
+| 1     | `pl.wypozyczalnia`          | Profesjonalne, jakbyś miał firmę |
+| 2     | `com.example.wypozyczalnia` | Typowa nazwa dla tutoriali          |
+| 3     | `pl.barto.wypozyczalnia`    | Osobista, z Twoim nickiem           |
 
 **Wszystkie są poprawne!** Wybierz którą wolisz. Ja sugerowałem `pl.wypozyczalnia` bo brzmi profesjonalnie i jest krótka.
 
@@ -450,11 +467,11 @@ W Javie pakiety (foldery z kodem) nazywa się **odwrotną nazwą domeny**:
 
 ## 💡 Co wpisać w IntelliJ:
 
-| Pole | Wartość |
-|------|---------|
-| **Group** | `pl.wypozyczalnia` (lub inna z powyższych) |
-| **Artifact** | `backend` |
-| **Package name** | Zostanie automatycznie: `pl.wypozyczalnia.backend` |
+| Pole                   | Wartość                                           |
+| ---------------------- | --------------------------------------------------- |
+| **Group**        | `pl.wypozyczalnia` (lub inna z powyższych)       |
+| **Artifact**     | `backend`                                         |
+| **Package name** | Zostanie automatycznie:`pl.wypozyczalnia.backend` |
 
 Która opcja Ci najbardziej odpowiada?
 
@@ -509,11 +526,11 @@ public class Film {
 
 ## 🎯 Podsumowanie
 
-| Termin | Co to znaczy |
-|--------|--------------|
-| **Package name** | Nazwa folderu dla Twojego kodu |
-| **pl.wypozyczalnia** | Folder `pl/wypozyczalnia/` |
-| **Group** | To samo co początek package name |
+| Termin                     | Co to znaczy                      |
+| -------------------------- | --------------------------------- |
+| **Package name**     | Nazwa folderu dla Twojego kodu    |
+| **pl.wypozyczalnia** | Folder `pl/wypozyczalnia/`      |
+| **Group**            | To samo co początek package name |
 
 ---
 
@@ -535,6 +552,7 @@ ale czemu pl?
 **`pl` = Polska** 🇵🇱
 
 To skrót kraju, tak jak:
+
 - `pl` = Polska
 - `de` = Niemcy
 - `uk` = Wielka Brytania
@@ -545,11 +563,11 @@ To skrót kraju, tak jak:
 ## 📍 Przykłady:
 
 | Strona internetowa | Pakiet w Javie |
-|--------------------|----------------|
-| onet**.pl** | `pl.onet` |
-| allegro**.pl** | `pl.allegro` |
-| google**.com** | `com.google` |
-| amazon**.de** | `de.amazon` |
+| ------------------ | -------------- |
+| onet**.pl**        | `pl.onet`    |
+| allegro**.pl**     | `pl.allegro` |
+| google**.com**     | `com.google` |
+| amazon**.de**      | `de.amazon`  |
 
 ---
 
@@ -573,6 +591,7 @@ a moze zosatc org.exsample?
 Tak, **`org.example`** jest idealny! ✅
 
 To bardzo popularna nazwa używana w:
+
 - Tutorialach
 - Projektach testowych
 - Przykładach na uczelniach
@@ -581,17 +600,15 @@ To bardzo popularna nazwa używana w:
 
 ## 📝 Wpisz w IntelliJ:
 
-| Pole | Wartość |
-|------|---------|
-| **Group** | `org.example` |
-| **Artifact** | `wypozyczalnia` |
-| **Package name** | Automatycznie: `org.example.wypozyczalnia` |
+| Pole                   | Wartość                                   |
+| ---------------------- | ------------------------------------------- |
+| **Group**        | `org.example`                             |
+| **Artifact**     | `wypozyczalnia`                           |
+| **Package name** | Automatycznie:`org.example.wypozyczalnia` |
 
 Jak utworzysz projekt, daj mi znać ścieżkę do folderu i przejdziemy dalej! 🚀
 
 ### User Input
-
-
 
 ### Planner Response
 
@@ -604,19 +621,24 @@ Teraz kliknij **"Next"** i na następnym ekranie **zaznacz te zależności**:
 ## ✅ Zależności do zaznaczenia:
 
 ### Web
+
 - ✅ **Spring Web**
 
 ### SQL
+
 - ✅ **Spring Data JPA**
 - ✅ **PostgreSQL Driver**
 
 ### Security
+
 - ✅ **Spring Security**
 
 ### I/O
+
 - ✅ **Validation**
 
 ### Developer Tools
+
 - ✅ **Lombok**
 
 ---
@@ -641,27 +663,27 @@ po co lombok?
 public class Film {
     private Long id;
     private String tytul;
-    
+  
     // Musisz napisać getter
     public Long getId() {
         return id;
     }
-    
+  
     // Musisz napisać setter
     public void setId(Long id) {
         this.id = id;
     }
-    
+  
     // Musisz napisać getter
     public String getTytul() {
         return tytul;
     }
-    
+  
     // Musisz napisać setter
     public void setTytul(String tytul) {
         this.tytul = tytul;
     }
-    
+  
     // ... i tak dla KAŻDEGO pola!
 }
 ```
@@ -694,7 +716,6 @@ Twój wybór! 😊
 
 wyajnsij czemu akurat te zalezosi?
 
-
 ### Planner Response
 
 Świetne pytanie! Wyjaśnię każdą zależność i do czego ją użyjemy:
@@ -703,55 +724,63 @@ wyajnsij czemu akurat te zalezosi?
 
 ## 🧩 Zależności i ich rola w projekcie
 
-| Zależność | Do czego służy | Jak użyjemy w wypożyczalni |
-|-----------|---------------|---------------------------|
-| **Spring Web** | Tworzenie stron i API | Endpointy jak `/api/filmy`, `/api/login` |
-| **Spring Data JPA** | Łatwy dostęp do bazy danych | Zapisywanie i pobieranie filmów, użytkowników |
-| **PostgreSQL Driver** | Łączenie się z PostgreSQL | Połączenie z Twoją bazą w Dockerze |
-| **Spring Security** | Logowanie i ochrona | Rejestracja, logowanie, sesje użytkowników |
-| **Validation** | Sprawdzanie poprawności danych | Czy email jest poprawny, czy hasło ma 8 znaków |
-| **Lombok** | Mniej pisania kodu | Automatyczne gettery/settery (opcjonalne) |
+| Zależność                | Do czego służy                | Jak użyjemy w wypożyczalni                     |
+| --------------------------- | ------------------------------- | ------------------------------------------------ |
+| **Spring Web**        | Tworzenie stron i API           | Endpointy jak `/api/filmy`, `/api/login`     |
+| **Spring Data JPA**   | Łatwy dostęp do bazy danych   | Zapisywanie i pobieranie filmów, użytkowników |
+| **PostgreSQL Driver** | Łączenie się z PostgreSQL    | Połączenie z Twoją bazą w Dockerze           |
+| **Spring Security**   | Logowanie i ochrona             | Rejestracja, logowanie, sesje użytkowników     |
+| **Validation**        | Sprawdzanie poprawności danych | Czy email jest poprawny, czy hasło ma 8 znaków |
+| **Lombok**            | Mniej pisania kodu              | Automatyczne gettery/settery (opcjonalne)        |
 
 ---
 
 ## 🔍 Szczegółowe wyjaśnienie:
 
 ### Spring Web
+
 ```java
 @GetMapping("/api/filmy")  // Ktoś wchodzi na stronę/api/filmy
 public List<Film> pobierzFilmy() {
     return listaFilmow;  // Dostaje listę filmów jako JSON
 }
 ```
+
 **Bez tego:** Nie mógłbyś tworzyć żadnych endpointów API.
 
 ---
 
 ### Spring Data JPA
+
 ```java
 public interface FilmRepository extends JpaRepository<Film, Long> {
     List<Film> findByTytul(String tytul);  // Wyszukaj film po tytule
 }
 ```
+
 **Bez tego:** Musiałbyś pisać ręcznie zapytania SQL.
 
 ---
 
 ### PostgreSQL Driver
+
 **Bez tego:** Java nie wie jak "rozmawiać" z PostgreSQL. To jak tłumacz między Javą a bazą.
 
 ---
 
 ### Spring Security
+
 ```java
 // Automatycznie: strona /api/wypozyczenia wymaga zalogowania
 // Niezalogowany użytkownik zostanie przekierowany
 ```
+
 **Bez tego:** Każdy mógłby robić wszystko, brak ochrony.
 
 ---
 
 ### Validation
+
 ```java
 @Email  // Sprawdź czy to prawdziwy email
 private String email;
@@ -759,6 +788,7 @@ private String email;
 @Size(min = 8)  // Hasło minimum 8 znaków
 private String haslo;
 ```
+
 **Bez tego:** Użytkownik mógłby wpisać "abc" jako email.
 
 ---
@@ -781,10 +811,10 @@ czy tego kodu bedzie zdecydowaniue wiecej?
 
 ## 📊 Porównanie dla klasy `Film` (7 pól):
 
-| | Z Lombok | Bez Lombok |
-|--|----------|------------|
-| **Linii kodu** | ~15 linii | ~80 linii |
-| **Czas pisania** | 1 minuta | 5 minut |
+|                        | Z Lombok  | Bez Lombok |
+| ---------------------- | --------- | ---------- |
+| **Linii kodu**   | ~15 linii | ~80 linii  |
+| **Czas pisania** | 1 minuta  | 5 minut    |
 
 ---
 
@@ -804,6 +834,7 @@ IntelliJ może **wygenerować** gettery/settery za Ciebie:
 ## 🎯 Moja rada:
 
 Skoro uczysz się Javy pierwszy raz:
+
 - **Zaznacz Lombok** - oszczędzi Ci pisania
 - Skupisz się na **logice biznesowej** zamiast na powtarzalnym kodzie
 
@@ -826,6 +857,7 @@ A to zmienia sprawę! 💡
 **NIE zaznaczaj Lombok!**
 
 Dlaczego?
+
 - Na obronie mogą zapytać: *"Co robi ta adnotacja `@Data`?"*
 - Lepiej mieć kod który **rozumiesz w 100%**
 - Gettery/settery to podstawy Javy - warto je pokazać
@@ -834,14 +866,14 @@ Dlaczego?
 
 ## ✅ Zaznacz tylko te zależności:
 
-| Zależność | Zaznacz? |
-|-----------|----------|
-| Spring Web | ✅ TAK |
-| Spring Data JPA | ✅ TAK |
-| PostgreSQL Driver | ✅ TAK |
-| Spring Security | ✅ TAK |
-| Validation | ✅ TAK |
-| **Lombok** | ❌ NIE |
+| Zależność      | Zaznacz? |
+| ----------------- | -------- |
+| Spring Web        | ✅ TAK   |
+| Spring Data JPA   | ✅ TAK   |
+| PostgreSQL Driver | ✅ TAK   |
+| Spring Security   | ✅ TAK   |
+| Validation        | ✅ TAK   |
+| **Lombok**  | ❌ NIE   |
 
 ---
 
@@ -857,7 +889,7 @@ Zaznacz zależności (bez Lombok) i kliknij **Create**! Po utworzeniu projektu d
 
 ### User Input
 
-cos z tego sie przyda? 
+cos z tego sie przyda?
 
 ### Planner Response
 
@@ -867,15 +899,15 @@ Z tej sekcji **nic nie musisz zaznaczać** dla Twojego projektu.
 
 ## Szybkie wyjaśnienie:
 
-| Opcja | Potrzebujesz? | Dlaczego |
-|-------|---------------|----------|
-| GraalVM Native Support | ❌ | Zaawansowana optymalizacja, zbędna |
-| GraphQL DGS | ❌ | Inny typ API, my używamy REST |
-| **Spring Boot DevTools** | ⚪ Opcjonalnie | Auto-restart po zmianach w kodzie |
-| Lombok | ❌ | Mówiłeś że nie |
-| Spring Configuration Processor | ❌ | Zbędne |
-| Docker Compose Support | ❌ | Niepotrzebne, Docker masz już skonfigurowany |
-| Spring Modulith | ❌ | Dla dużych aplikacji |
+| Opcja                          | Potrzebujesz?  | Dlaczego                                      |
+| ------------------------------ | -------------- | --------------------------------------------- |
+| GraalVM Native Support         | ❌             | Zaawansowana optymalizacja, zbędna           |
+| GraphQL DGS                    | ❌             | Inny typ API, my używamy REST                |
+| **Spring Boot DevTools** | ⚪ Opcjonalnie | Auto-restart po zmianach w kodzie             |
+| Lombok                         | ❌             | Mówiłeś że nie                            |
+| Spring Configuration Processor | ❌             | Zbędne                                       |
+| Docker Compose Support         | ❌             | Niepotrzebne, Docker masz już skonfigurowany |
+| Spring Modulith                | ❌             | Dla dużych aplikacji                         |
 
 ---
 
@@ -922,11 +954,13 @@ Widzę, że projekt jest na Pulpicie, poza moim dostępnym workspace. Mam kilka 
 ## 📁 Problem z lokalizacją projektu
 
 Twój nowy projekt jest w:
+
 ```
 C:\Users\barto\Desktop\wypozyczalnia-backend\
 ```
 
 Ale mój dostęp jest ograniczony do:
+
 ```
 C:\Users\barto\IdeaProjects\TAI\
 ```
@@ -936,11 +970,13 @@ C:\Users\barto\IdeaProjects\TAI\
 ## 🔧 Rozwiązania:
 
 ### Opcja 1: Przenieś projekt do `IdeaProjects` (zalecane)
+
 1. Zamknij projekt w IntelliJ (File → Close Project)
 2. Przenieś folder `wypozyczalnia-backend` z Pulpitu do `C:\Users\barto\IdeaProjects\`
 3. Otwórz ponownie w IntelliJ (File → Open → wybierz nową lokalizację)
 
 ### Opcja 2: Wyłącz walidację workspace
+
 Czy chcesz wyłączyć ograniczenie dostępu, żebym mógł pracować na Pulpicie?
 
 ---
@@ -962,6 +998,7 @@ C:\Users\barto\IdeaProjects
 Widzę że mój dostęp jest tylko do folderu `TAI`, a Twój nowy projekt jest w innym folderze. Mam dwie opcje:
 
 **Opcja 1:** Przenieś folder `wypozyczalnia-backend` DO ŚRODKA folderu `TAI`:
+
 ```
 C:\Users\barto\IdeaProjects\TAI\wypozyczalnia-backend\
 ```

@@ -1,73 +1,94 @@
 package org.example.wypozyczalnia.controller;
 
 import org.example.wypozyczalnia.entity.Film;
-import org.example.wypozyczalnia.repository.FilmRepository;
+import org.example.wypozyczalnia.service.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-/** tak
- *
- * 
+/**
  * KONTROLER - FilmController
  * 
- * Kontroler odpowiada na żądania HTTP.
- * Każda metoda to jeden "endpoint" (adres URL).
- * 
- * @RestController = ta klasa zwraca dane (JSON), nie strony HTML
- * @RequestMapping = prefiks dla wszystkich endpointów w tej klasie
+ * Teraz używa SERWISU (FilmService), a nie bezpośrednio repozytorium.
+ * To lepsza praktyka - kontroler tylko "przyjmuje zamówienia",
+ * a serwis "gotuje dania" (wykonuje logikę).
  */
-
 @RestController
-@RequestMapping("/api/filmy") // Wszystkie endpointy zaczynają się od /api/filmy
+@RequestMapping("/api/filmy")
 public class FilmController {
 
-    // @Autowired = Spring automatycznie "wstrzykuje" repozytorium
-    // Nie musisz tworzyć obiektu ręcznie (new FilmRepository())
-    @Autowired
-    private FilmRepository filmRepository;
+    private final FilmService filmService;
 
-    // ============================================
-    // GET /api/filmy - pobierz wszystkie filmy
-    // ============================================
-    @GetMapping
-    public List<Film> pobierzWszystkieFilmy() {
-        return filmRepository.findAll();
+    @Autowired
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
     }
 
+    // ============================================
+    // GET /api/filmy
+    // ============================================
+    // ============================================
+    // GET /api/filmy
+    // ============================================
+    @GetMapping
+    public List<Film> pobierzWszystkieFilmy(
+            @RequestParam(required = false) String gatunek,
+            @RequestParam(required = false) Double minOcena) {
+        return filmService.pobierzWszystkieFilmy(gatunek, minOcena);
+    }
 
     // ============================================
-    // GET /api/filmy/1 - pobierz film o ID=1
+    // GET /api/filmy/szukaj - ZAAWANSOWANE WYSZUKIWANIE
+    // ============================================
+    @GetMapping("/szukaj")
+    public List<Film> szukajFilmow(
+            @RequestParam(required = false) String tytul,
+            @RequestParam(required = false) String gatunek,
+            @RequestParam(required = false) Integer rok,
+            @RequestParam(required = false) java.math.BigDecimal cenaMax,
+            @RequestParam(required = false) Double minOcena) {
+        return filmService.szukajFilmow(tytul, gatunek, rok, cenaMax, minOcena);
+    }
+
+    // ============================================
+    // GET /api/filmy/gatunki
+    // ============================================
+    @GetMapping("/gatunki")
+    public List<org.example.wypozyczalnia.entity.Gatunek> pobierzGatunki() {
+        return filmService.pobierzWszystkieGatunki();
+    }
+
+    // ============================================
+    // GET /api/filmy/{id}
     // ============================================
     @GetMapping("/{id}")
     public Film pobierzFilmPoId(@PathVariable Long id) {
-        return filmRepository.findById(id).orElse(null);
+        return filmService.pobierzFilmPoId(id).orElse(null);
     }
 
     // ============================================
-    // POST /api/filmy - dodaj nowy film
+    // POST /api/filmy
     // ============================================
     @PostMapping
     public Film dodajFilm(@RequestBody Film film) {
-        return filmRepository.save(film);
+        return filmService.dodajFilm(film);
     }
 
     // ============================================
-    // DELETE /api/filmy/1 - usuń film o ID=1
+    // DELETE /api/filmy/{id}
     // ============================================
     @DeleteMapping("/{id}")
     public String usunFilm(@PathVariable Long id) {
-        filmRepository.deleteById(id);
+        filmService.usunFilm(id);
         return "Film usunięty!";
     }
 
     // ============================================
-    // GET /api/filmy/test - prosty test
+    // GET /api/filmy/test
     // ============================================
     @GetMapping("/test")
     public String test() {
-        return "Kontroler działa! Filmów w bazie: " + filmRepository.count();
+        return "Kontroler działa! Filmów w bazie: " + filmService.pobierzWszystkieFilmy(null, null).size();
     }
 }

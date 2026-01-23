@@ -30,4 +30,6 @@ Thumbs.db
 # DANE WRAŻLIWE (jeśli używasz)
 # ============================================
 # application-local.properties
-# .env
+.env
+
+src/main/resources/application*.properties
